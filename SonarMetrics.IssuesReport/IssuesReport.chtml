@@ -111,10 +111,38 @@
   </style>
 </head>
 <body>
+
+	<H1>Resumen</H1>
+	<table>
+		<tr>
+			<th>KEY</th>
+			<th>TOTAL NEW ISSUES</th>
+			<th>BLOCKER</th>
+			<th>CRITICAL</th>
+			<th>MAJOR</th>
+			<th>MINOR</th>
+		</tr>  
+		@foreach (var prj in @Model.Proyectos)
+		{
+			<tr> 
+				<td class="res-name"> @prj.Key </td> 
+				<td> @prj.Issues.Count().ToString() </td>
+				<td class="priority-blocker"> @prj.Issues.Where(i=> i.severity == "BLOCKER").Count().ToString() </td>
+				<td class="priority-critical"> @prj.Issues.Where(i=> i.severity == "CRITICAL").Count().ToString() </td>
+				<td class="priority-major"> @prj.Issues.Where(i=> i.severity == "MAJOR").Count().ToString() </td>
+				<td class="priority-minor"> @prj.Issues.Where(i=> i.severity == "MINOR").Count().ToString() </td>
+			</tr>
+		}
+	</table>
+	<p>
+	
+	
+	
+	</p>
 @foreach (var proj in @Model.Proyectos)
 {
 	<H1> Proyecto @proj.Key </H1>
-	<p>Found @proj.Issues.Count().ToString() new violations in @proj.Components.Count().ToString() files.</p>
+	<p>Found @proj.Issues.Count().ToString() new issues in @proj.Components.Count().ToString() files.</p>
 	<h2>Issues</h2>
 	<ol>
 	@foreach (var issue in proj.Issues)
