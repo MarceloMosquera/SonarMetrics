@@ -21,7 +21,6 @@
       border-collapse: collapse;
       width: 100%
     }
-
     th
     {
       text-align: left;
@@ -45,8 +44,6 @@
 
     table.source-incut td
     {
-      white-space: pre;
-      padding: 3px;
       font-family: "Lucida Console", "Courier New";
       font-size: 9pt;
     }
@@ -134,11 +131,9 @@
 			</tr>
 		}
 	</table>
-	<p>
-	
-	
-	
-	</p>
+	</br>
+	</br>
+	</br>
 @foreach (var proj in @Model.Proyectos)
 {
 	<H1> Proyecto @proj.Key </H1>
@@ -166,6 +161,8 @@
 			</li>
 	}
 	</ol>
+	</br>
+	</br>
 }
 </body>
 </html>
