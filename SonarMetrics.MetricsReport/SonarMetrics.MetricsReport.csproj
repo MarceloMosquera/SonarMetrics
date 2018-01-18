@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4EDE0619-E5DD-4780-AC00-265B4F301E0E}</ProjectGuid>
+    <ProjectGuid>{B2D377F8-0D7B-427F-B320-211862D83780}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SonarMetrics.Lib</RootNamespace>
-    <AssemblyName>SonarMetrics.Lib</AssemblyName>
+    <RootNamespace>SonarMetrics.MetricsReport</RootNamespace>
+    <AssemblyName>SonarMetrics.MetricsReport</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -52,15 +52,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomHttpClient.cs" />
-    <Compile Include="DownloadConfig.cs" />
-    <Compile Include="Entities\IssuesResponse.cs" />
-    <Compile Include="Entities\SonarEntities.cs" />
     <Compile Include="IReport.cs" />
+    <Compile Include="MetricsReport.cs" />
+    <Compile Include="MetricsReportDownloader.cs" />
+    <Compile Include="MetricsReportViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="MetricsReport.chtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SonarMetrics.Lib\SonarMetrics.Lib.csproj">
+      <Project>{4ede0619-e5dd-4780-ac00-265b4f301e0e}</Project>
+      <Name>SonarMetrics.Lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

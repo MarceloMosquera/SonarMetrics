@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Sonar violations report</title>
+  <style type="text/css">
+    body
+    {
+      margin: 0px;
+      padding: 15px;
+    }
+
+    body, td, th
+    {
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Tahoma, sans-serif;
+      font-size: 10pt;
+    }
+
+    table
+    {
+      border-collapse: collapse;
+      width: 100%
+    }
+
+    th
+    {
+      text-align: left;
+    }
+
+    h1
+    {
+      margin-top: 0px;
+    }
+
+    li
+    {
+      line-height: 15pt;
+    }
+
+    .res-name
+    {
+      color: #363;
+    }
+    .error
+    {
+      background-color: #FCC;
+    }
+
+  </style>
+</head>
+<body>
+	<table>
+		<tr><th>KEY</th><th>SQALE</th><th>COVERAGE</th></tr>  
+		@foreach (var prj in Model.Proyectos)
+		{
+			<tr> 
+				<td class="res-name"> @prj.Key </td> 
+				<td> @Model.GetMetricSQALE(prj) </td>
+				<td> @Model.MetricCoverage(prj) </td>
+			</tr>
+		}
+	</table>
+</body>
+</html>

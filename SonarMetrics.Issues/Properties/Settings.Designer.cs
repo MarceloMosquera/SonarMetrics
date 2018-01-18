@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SonarMetrics.Console.Properties {
+namespace SonarMetrics.Issues.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -56,31 +56,6 @@ namespace SonarMetrics.Console.Properties {
             }
             set {
                 this["MetricsUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("api/issues/search?componentKeys={0}&statuses=OPEN&createdInLast=1w&severities=BLO" +
-            "CKER,CRITICAL,MAJOR,MINOR")]
-        public string IssuesUrl {
-            get {
-                return ((string)(this["IssuesUrl"]));
-            }
-            set {
-                this["IssuesUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("api/sources/show?key={0}")]
-        public string SourcesUrl {
-            get {
-                return ((string)(this["SourcesUrl"]));
-            }
-            set {
-                this["SourcesUrl"] = value;
             }
         }
     }

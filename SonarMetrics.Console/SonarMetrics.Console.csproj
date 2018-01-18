@@ -33,8 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.10.0\lib\net45\RazorEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,15 +61,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SonarMetrics.IssuesReport\SonarMetrics.IssuesReport.csproj">
+      <Project>{4EC93D9B-A96F-4CBF-B6E4-C7C7255966E1}</Project>
+      <Name>SonarMetrics.IssuesReport</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SonarMetrics.Lib\SonarMetrics.Lib.csproj">
       <Project>{4EDE0619-E5DD-4780-AC00-265B4F301E0E}</Project>
       <Name>SonarMetrics.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SonarMetrics.MetricsReport\SonarMetrics.MetricsReport.csproj">
+      <Project>{b2d377f8-0d7b-427f-b320-211862d83780}</Project>
+      <Name>SonarMetrics.MetricsReport</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

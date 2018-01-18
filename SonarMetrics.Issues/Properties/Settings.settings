@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SonarMetrics.Console.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SonarMetrics.Issues.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="SonarBaseUrl" Type="System.String" Scope="User">
@@ -10,12 +10,6 @@
     </Setting>
     <Setting Name="MetricsUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">api/measures/component?componentKey={0}&amp;metricKeys=sqale_rating,coverage</Value>
-    </Setting>
-    <Setting Name="IssuesUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">api/issues/search?componentKeys={0}&amp;statuses=OPEN&amp;createdInLast=1w&amp;severities=BLOCKER,CRITICAL,MAJOR,MINOR</Value>
-    </Setting>
-    <Setting Name="SourcesUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">api/sources/show?key={0}</Value>
     </Setting>
   </Settings>
 </SettingsFile>

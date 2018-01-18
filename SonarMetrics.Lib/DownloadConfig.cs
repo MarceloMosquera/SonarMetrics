@@ -14,5 +14,8 @@ namespace SonarMetrics.Lib
         public string ProjectsUrl { get; set; } //"api/projects/index"
         public string MetricsUrl { get; set; } //"api/measures/component?componentKey={0}&metricKeys=sqale_rating,coverage"
         public string ProjectFilter { get; set; } //"SuperNet-@VUC@TSAV"
+        public string IssuesUrl { get; set; } //"api/issues/search?componentKeys={0}&statuses=OPEN&createdInLast={1}&severities=BLOCKER,CRITICAL,MAJOR,MINOR"
+        public string SourcesUrl { get; set; } //"api/sources/show?key={0}"
+        public string OutputFile { get; set; }
     }
 }

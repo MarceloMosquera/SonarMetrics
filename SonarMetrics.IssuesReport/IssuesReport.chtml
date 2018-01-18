@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Sonar violations report</title>
+  <style type="text/css">
+    body
+    {
+      margin: 0px;
+      padding: 15px;
+    }
+
+    body, td, th
+    {
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Tahoma, sans-serif;
+      font-size: 10pt;
+    }
+
+    table
+    {
+      border-collapse: collapse;
+      width: 100%
+    }
+
+    th
+    {
+      text-align: left;
+    }
+
+    h1
+    {
+      margin-top: 0px;
+    }
+
+    li
+    {
+      line-height: 15pt;
+    }
+
+    table.source-incut
+    {
+      background-color: #EEE;
+      border: 1px solid #DDD;
+    }
+
+    table.source-incut td
+    {
+      white-space: pre;
+      padding: 3px;
+      font-family: "Lucida Console", "Courier New";
+      font-size: 9pt;
+    }
+
+    .priority-blocker
+    {
+      color: #A22;
+    }
+
+    .priority-critical
+    {
+      color: #A42;
+    }
+
+    .priority-major
+    {
+      color: #A62;
+    }
+
+    .priority-minor
+    {
+      color: #4A2;
+    }
+
+    .priority-info
+    {
+      color: #2A2;
+    }
+
+    .line-number
+    {
+      color: #777;
+      width: 20px;
+    }
+
+    .res-name
+    {
+      color: #363;
+    }
+
+    .source
+    {
+      color: #336;
+    }
+
+    .error
+    {
+      background-color: #FCC;
+    }
+	.k {
+		 color: #0071ba;
+		font-weight: 600;
+	}
+	.s {
+		color: #d4333f;
+		font-weight: 400;
+	}	
+	.cd, .cppd {
+		color: #666;
+		font-style: italic;
+	}
+  </style>
+</head>
+<body>
+@foreach (var proj in @Model.Proyectos)
+{
+	<H1> Proyecto @proj.Key </H1>
+	<p>Found @proj.Issues.Count().ToString() new violations in @proj.Components.Count().ToString() files.</p>
+	<h2>Issues</h2>
+	<ol>
+	@foreach (var issue in proj.Issues)
+	{
+			<li>
+				<p>[<b><span class="priority-@issue.severity.ToLower()">@issue.severity</span></b>] 
+					<b>@issue.rule</b>. @issue.message<br />
+					in resource <span class="res-name">@issue.component</span> at line @issue.line
+					(<a href="@Model.ViewInSonarUrl(issue.component, issue.line)">view in Sonar</a>):
+				</p>
+				@if (Model.HasSource(issue)) {
+				<table class="source-incut">
+					@foreach (var line in Model.SourceLines(issue))
+					{
+						<tr @( line.lineNum == issue.line ? "class=error": "" ) >
+							<td class="line-number"> @line.lineNum </td> <td class="source"> @Raw(line.lineText) </td>
+						</tr>
+					}
+				</table>
+				}
+			</li>
+	}
+	</ol>
+}
+</body>
+</html>

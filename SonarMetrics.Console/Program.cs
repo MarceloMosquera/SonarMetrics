@@ -1,9 +1,10 @@
-﻿using SonarMetrics.Lib;
-using SonarMetrics.Lib.Entities;
+﻿using SonarMetrics.IssuesReport;
+using SonarMetrics.Lib;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Reflection;
+using System.Security;
+using System.Security.Permissions;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace SonarMetrics.Console
@@ -11,9 +12,37 @@ namespace SonarMetrics.Console
     class Program
     {
 
+        enum TipoReporte
+        {
+            Metrics,
+            Issues
+        }
+
         static void Main(string[] args)
         {
-            MainAsync(args).GetAwaiter().GetResult();
+            if (AppDomain.CurrentDomain.IsDefaultAppDomain())
+            {
+                // RazorEngine cannot clean up from the default appdomain...
+                AppDomainSetup adSetup = new AppDomainSetup();
+                adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+                var current = AppDomain.CurrentDomain;
+                // You only need to add strongnames when your appdomain is not a full trust environment.
+                var strongNames = new StrongName[0];
+
+                var domain = AppDomain.CreateDomain(
+                    "MyMainDomain", null,
+                    current.SetupInformation, new PermissionSet(PermissionState.Unrestricted),
+                    strongNames);
+                var exitCode = domain.ExecuteAssembly(Assembly.GetExecutingAssembly().Location, args);
+                // RazorEngine will cleanup. 
+                AppDomain.Unload(domain);
+                //return exitCode;
+            }
+            else
+            {
+                MainAsync(args).GetAwaiter().GetResult();
+            }
+
         }
 
         static async Task MainAsync(string[] args)
@@ -25,10 +54,12 @@ namespace SonarMetrics.Console
                 {
                     System.Console.WriteLine($"{i}-{args[i]}");
                 }
-                System.Console.WriteLine("Parametros Necesarios: Usuario Password ProjectFilter(Separados por @)");
+                System.Console.WriteLine("Parametros Necesarios: Usuario Password ProjectFilter(Separados por @) [Reporte=Metrics|Issues] outFile");
             }
             else
             {
+                var reporteAEmitir = (args.GetUpperBound(0) > 2) ? (TipoReporte)Enum.Parse(typeof(TipoReporte), args[3]) : TipoReporte.Metrics;
+
                 var conf = new DownloadConfig
                 {
                     Usuario = args[0],
@@ -36,58 +67,40 @@ namespace SonarMetrics.Console
                     SonarBaseUrl = Properties.Settings.Default.SonarBaseUrl,
                     ProjectsUrl = Properties.Settings.Default.ProjectsUrl,
                     MetricsUrl = Properties.Settings.Default.MetricsUrl,
+                    IssuesUrl = Properties.Settings.Default.IssuesUrl,
+                    SourcesUrl = Properties.Settings.Default.SourcesUrl,
                     ProjectFilter = args[2]
                 };
-                var Downloadhelper = new DownloadHelper(conf);
 
                 try
                 {
-                    await Downloadhelper.DownloadProjects();
-                    WriteResultHtml(Downloadhelper.Proyectos);
+                    switch (reporteAEmitir)
+                    {
+                        case TipoReporte.Issues:
+                            var report = new IssuesReport.IssuesReport(conf, args);
+                            await report.Download();
+                            report.WriteResultHtml();
+                            break;
+                        default:
+                            //var downloadHelper = new DownloadHelper(conf);
+                            //await downloadHelper.DownloadProjects();
+                            //(new MetricsReport(downloadHelper.Proyectos)).WriteResultHtml();
+                            var report2 = new MetricsReport.MetricsReport(conf, args);
+                            await report2.Download();
+                            report2.WriteResultHtml();
+                            break;
+                    }
+
+
                 }
                 catch (Exception e)
                 {
                     System.Console.WriteLine(e.Message);
-                    System.Console.Write(e.StackTrace);
+                    //System.Console.Write(e.StackTrace);
+                    System.Console.ReadKey();
                 }
                 //System.Console.ReadKey();
             }
-        }
-
-        static private void WriteResult(List<Project> proyectos)
-        {
-            var maxKey = MaxProjectKeyLength(proyectos.Select(p => p.Key).ToList())+1;
-            System.Console.WriteLine($"{"KEY".PadRight(maxKey)}\tSQALE\tCOVERAGE");
-            foreach (var prj in proyectos)
-            {
-                var metricSQALE = GetLetterSQALE(prj.Measure.component.measures.FirstOrDefault(m => m.metric == "sqale_rating")?.value);
-                var metricCoverage = prj.Measure.component.measures.FirstOrDefault(m => m.metric == "coverage")?.value;
-                System.Console.WriteLine($"{prj.Key.PadRight(maxKey)}\t{metricSQALE}\t{metricCoverage}");
-            }
-            
-        }
-        static private void WriteResultHtml(List<Project> proyectos)
-        {
-            System.Console.WriteLine("<table><tr><th>KEY</th><th>SQALE</th><th>COVERAGE</th></tr>");
-            foreach (var prj in proyectos)
-            {
-                var metricSQALE = GetLetterSQALE(prj.Measure.component.measures.FirstOrDefault(m => m.metric == "sqale_rating")?.value);
-                var metricCoverage = prj.Measure.component.measures.FirstOrDefault(m => m.metric == "coverage")?.value;
-                System.Console.WriteLine($"<tr><td>{prj.Key}</td><td>{metricSQALE}</td><td>{metricCoverage}</td></tr>");
-            }
-            System.Console.WriteLine("</table>");
-        }
-
-        static private string GetLetterSQALE(string value)
-        {
-            if (string.IsNullOrEmpty(value)) return "";
-            int val = int.Parse(value.Substring(0, 1)) - 1;
-            return "ABCDE"[val].ToString();
-        }
-
-        static int MaxProjectKeyLength(List<String> Keys)
-        {
-            return Keys.Max(p => p.Length);
         }
 
     }

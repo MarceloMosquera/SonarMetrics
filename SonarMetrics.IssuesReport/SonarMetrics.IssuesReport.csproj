@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4EDE0619-E5DD-4780-AC00-265B4F301E0E}</ProjectGuid>
+    <ProjectGuid>{4EC93D9B-A96F-4CBF-B6E4-C7C7255966E1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SonarMetrics.Lib</RootNamespace>
-    <AssemblyName>SonarMetrics.Lib</AssemblyName>
+    <RootNamespace>SonarMetrics.IssuesReport</RootNamespace>
+    <AssemblyName>SonarMetrics.IssuesReport</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -52,14 +52,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomHttpClient.cs" />
-    <Compile Include="DownloadConfig.cs" />
-    <Compile Include="Entities\IssuesResponse.cs" />
-    <Compile Include="Entities\SonarEntities.cs" />
-    <Compile Include="IReport.cs" />
+    <Compile Include="IssuesReport.cs" />
+    <Compile Include="IssuesReportDownloader.cs" />
+    <Compile Include="IssuesReportViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SonarMetrics.Lib\SonarMetrics.Lib.csproj">
+      <Project>{4ede0619-e5dd-4780-ac00-265b4f301e0e}</Project>
+      <Name>SonarMetrics.Lib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="IssuesReport.chtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
