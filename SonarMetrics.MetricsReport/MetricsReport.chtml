@@ -45,20 +45,72 @@
     {
       background-color: #FCC;
     }
-
+	.important-text
+    {
+      font-size: 12pt;
+	  color: darkblue;
+    }
+	.SQALE-A {
+	    background: green;
+		color: white;
+		padding: 3px;
+	}
+	.SQALE-B {
+	    background: orange;
+		color: white;
+		padding: 3px;
+	}
+	.SQALE-C {
+	    background: orange;
+		color: white;
+		padding: 3px;
+	}
+	.SQALE-C {
+	    background: red;
+		color: white;
+		padding: 3px;
+	}
+	.SQALE-E {
+	    background: red;
+		color: white;
+		padding: 3px;
+	}
   </style>
 </head>
 <body>
+	<H1>Reporte de Metricas</H1><em> @DateTime.Now.ToString() </em>
+
 	<table>
-		<tr><th>KEY</th><th>SQALE</th><th>COVERAGE</th></tr>  
+		<tr>
+			<th>KEY</th>
+			<th>SQALE</th>
+			<th>COVERAGE</th>
+			<th>CODE SMELLS</th>
+			<th>LOC</th>
+			<th>DUPLICATIONS</th>
+		</tr>  
 		@foreach (var prj in Model.Proyectos)
 		{
 			<tr> 
-				<td class="res-name"> @prj.Key </td> 
-				<td> @Model.GetMetricSQALE(prj) </td>
-				<td> @Model.MetricCoverage(prj) </td>
+				<td class="res-name important-text"> <a href="@Model.ViewInSonarUrl(prj.Key)">@prj.Key</a></td> 
+				<td> <span class="SQALE-@Model.GetMetricSQALE(prj)">@Model.GetMetricSQALE(prj)</span> </td>
+				<td> <span class="important-text">@Model.GetMetric(prj, "coverage")%</span> 
+					<br/> Test: @Model.GetMetric(prj, "tests") fails: @Model.GetMetric(prj, "test_failures") </td>
+				<td> <span class="important-text">@Model.GetMetric(prj, "violations")</span> 
+					<br/>Blocker: @Model.GetMetric(prj, "blocker_violations") Crit: @Model.GetMetric(prj, "critical_violations")</td>
+				<td> <span class="important-text">@Model.GetMetric(prj, "ncloc")</span> </td>
+				<td> <span class="important-text">@Model.GetMetric(prj, "duplicated_lines_density")%</span> 
+					<br/>Blocks:@Model.GetMetric(prj, "duplicated_blocks")  </td>
 			</tr>
 		}
+			<tr bgcolor="#d3d3d3" > 
+				<td bgcolor="#d3d3d3"> Total: @Model.Proyectos.Count </td> 
+				<td > </td>
+				<td bgcolor="#d3d3d3"> @Model.GetMetricAvg("coverage")% </td>
+				<td bgcolor="#d3d3d3"> @Model.GetMetricSum("violations")</td>
+				<td bgcolor="#d3d3d3"> @Model.GetMetricSum("ncloc") </td>
+				<td bgcolor="#d3d3d3"> @Model.GetMetricAvg("duplicated_lines_density")% </td>
+			</tr>
 	</table>
 </body>
 </html>

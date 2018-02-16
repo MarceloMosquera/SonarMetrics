@@ -24,11 +24,36 @@ namespace SonarMetrics.MetricsReport
             return "ABCDE"[val].ToString();
         }
 
-        public string MetricCoverage(Project prj)
+        public string GetMetric(Project prj, string metric)
         {
-            return prj.Measure.component.measures.FirstOrDefault(m => m.metric == "coverage")?.value;
+            return prj.Measure.component.measures.FirstOrDefault(m => m.metric == metric)?.value;
         }
+        public string GetMetricAvg(string metric)
+        {
+            try
+            {
+                var metrics = from p in Proyectos
+                       select p.Measure.component.measures.FirstOrDefault(m => m.metric == metric) ;
+                var vals = metrics.Select(m => decimal.Parse(m.value, System.Globalization.CultureInfo.InvariantCulture)).ToList();
+                var avg = vals.Average(v => v);
+                return avg.ToString("0.00");
+            }
+            catch { return "0"; }
+        }
+        public string GetMetricSum(string metric)
+        {
+            try {
+                var prom = from p in Proyectos
+                           select p.Measure.component.measures.FirstOrDefault(m => m.metric == metric);
 
+                return prom.Sum(m => decimal.Parse(m.value)  ).ToString();
+            }
+            catch  { return "0"; }
+        }
+        public string ViewInSonarUrl(string componente)
+        {
+            return $"{Config.SonarBaseUrl}component_measures/?id={componente}";
+        }
     }
 
 }

@@ -109,7 +109,7 @@
 </head>
 <body>
 
-	<H1>Resumen</H1>
+	<H1>Resumen</H1><em> @DateTime.Now.ToString() </em>
 	<table>
 		<tr>
 			<th>KEY</th>
@@ -131,9 +131,9 @@
 			</tr>
 		}
 	</table>
-	</br>
-	</br>
-	</br>
+	<br/>
+	<br/>
+	<br/>
 @foreach (var proj in @Model.Proyectos)
 {
 	<H1> Proyecto @proj.Key </H1>
@@ -161,8 +161,8 @@
 			</li>
 	}
 	</ol>
-	</br>
-	</br>
+	<br/>
+	<br/>
 }
 </body>
 </html>
